@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(1200px 600px at 50% -10%, #ffd1dc 0%, #ff8fb1 35%, #ff5d8f 60%, #ff3366 100%);
+      font-family: 'Poppins', sans-serif;
+      color: #2b0a1a;
+      overflow: hidden;
+    }.card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 24px;
+  padding: 40px 48px 48px;
+  width: min(92vw, 520px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #ff5d8f;
+  transform: rotate(45deg);
+  animation: float 8s linear infinite;
+  opacity: 0.6;
+}
+.heart::before, .heart::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #ff5d8f;
+  border-radius: 50%;
+}
+.heart::before { left: -7px; }
+.heart::after { top: -7px; }
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(45deg) scale(0.8); }
+  100% { transform: translateY(-120vh) rotate(45deg) scale(1.1); }
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 16px;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  letter-spacing: 0.5px;
+}
+
+p {
+  text-align: center;
+  margin: 0 0 28px;
+  color: #6b1b3a;
+  font-size: 0.95rem;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+  position: relative;
+}
+
+button {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+#yesBtn {
+  background: linear-gradient(135deg, #ff5d8f, #ff3366);
+  color: white;
+}
+#yesBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.2);
+}
+
+#noBtn {
+  background: #ffe4ec;
+  color: #b0163b;
+  position: relative;
+}
+#noBtn:hover {
+  background: #ffd1dc;
+}
+
+.result {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  min-height: 1.5em;
+  color: #b0163b;
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle 600ms ease-out forwards;
+}
+
+@keyframes sparkle {
+  from { transform: scale(1) translateY(0); opacity: 1; }
+  to { transform: scale(0) translateY(-20px); opacity: 0; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="hearts" id="hearts"></div>
+    <h1>Dear Dora, will you be my Valentine? 💖</h1>
+    <p>Click yes for a lifetime of memories!</p>
+    <div class="buttons" id="btnWrap">
+      <button id="yesBtn">Yes 💘</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+    <div class="result" id="result"></div>
+  </div>  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const result = document.getElementById('result');
+    const btnWrap = document.getElementById('btnWrap');
+    const hearts = document.getElementById('hearts');
+
+    // Floating hearts
+    for (let i = 0; i < 24; i++) {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.style.left = Math.random() * 100 + '%';
+      h.style.bottom = '-20px';
+      h.style.animationDelay = (Math.random() * 8) + 's';
+      h.style.animationDuration = (6 + Math.random() * 6) + 's';
+      hearts.appendChild(h);
+    }
+
+    function sparkleAt(x, y) {
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.style.left = x + 'px';
+        s.style.top = y + 'px';
+        s.style.transform = `translate(${(Math.random()-0.5)*30}px, ${(Math.random()-0.5)*30}px)`;
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 600);
+      }
+    }
+
+    yesBtn.addEventListener('click', (e) => {
+      const rect = yesBtn.getBoundingClientRect();
+      sparkleAt(rect.left + rect.width/2, rect.top + rect.height/2);
+      result.textContent = 'Haafeez Haafeez ho gaya Hafeez! 💞 ';
+      yesBtn.textContent = 'Yesss! 😍';
+      noBtn.disabled = true;
+    });
+
+    noBtn.addEventListener('mouseenter', moveNo);
+    noBtn.addEventListener('touchstart', moveNo);
+
+    function moveNo(e) {
+      const wrapRect = btnWrap.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = wrapRect.width - btnRect.width;
+      const maxY = wrapRect.height - btnRect.height;
+
+      const x = Math.max(0, Math.random() * maxX);
+      const y = Math.max(0, Math.random() * maxY);
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+  </script></body>
+</html>
